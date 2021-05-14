@@ -75,12 +75,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install
-      run: |
-        pwd
-        chmod +x install.sh
-        ./install.sh
-    - name: Build and test
-      run: |
-        python3 --version
-        ./open_spiel/scripts/travis_script.sh
+    - uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        registry: docker.pkg.github.com
+        password: ${{ github.token }}
+        repository: ${{ github.repository }}/docker
+        cache_froms: ${{ github.repository }}/docker:latest
+        tag_with_ref: true
